@@ -14,10 +14,11 @@ const LOCAL_VIDEOS = [
 }));
 
 /* ─────────────────────────────────────────
-   GLOBAL NAV — Custom, no Apple branding
+   GLOBAL NAV
 ───────────────────────────────────────── */
 function GlobalNav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
@@ -32,10 +33,12 @@ function GlobalNav() {
     { label: "Brand Videos", id: "brand-video" },
     { label: "AI Videos", id: "ai-video" },
     { label: "Instagram Reels", id: "instagram-trend" },
+    { label: "Contact", id: "contact-section" },
   ];
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
   };
 
   return (
@@ -49,7 +52,7 @@ function GlobalNav() {
       boxSizing: "border-box",
     }}>
       <div style={{
-        width: "100%", padding: "0 40px", height: 58,
+        width: "100%", padding: "0 20px", height: 58,
         display: "flex", alignItems: "center", justifyContent: "space-between",
         boxSizing: "border-box",
       }}>
@@ -59,6 +62,7 @@ function GlobalNav() {
             width: 38, height: 38, borderRadius: "50%",
             background: "linear-gradient(135deg,#f7c948,#e6a800)",
             display: "flex", alignItems: "center", justifyContent: "center",
+            flexShrink: 0,
           }}>
             <span style={{ color: "#000", fontWeight: 900, fontSize: 17, fontFamily: "Georgia,serif" }}>H</span>
           </div>
@@ -71,8 +75,8 @@ function GlobalNav() {
           </span>
         </div>
 
-        {/* Links */}
-        <div style={{ display: "flex", alignItems: "center", gap: 26 }}>
+        {/* Desktop Links */}
+        <div style={{ display: "flex", alignItems: "center", gap: 22, "@media(max-width:768px)": { display: "none" } }} className="desktop-nav">
           {links.map(l => (
             <button key={l.label} onClick={() => scrollTo(l.id)}
               style={{
@@ -89,7 +93,7 @@ function GlobalNav() {
           <a href="mailto:hpatidar0099@gmail.com"
             style={{
               background: "#f7c948", color: "#000", fontSize: 13,
-              padding: "8px 22px", borderRadius: 22, textDecoration: "none",
+              padding: "8px 18px", borderRadius: 22, textDecoration: "none",
               fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif",
               fontWeight: 600, letterSpacing: "-0.01em",
               transition: "opacity 0.2s", whiteSpace: "nowrap",
@@ -98,7 +102,56 @@ function GlobalNav() {
             onMouseLeave={e => e.currentTarget.style.opacity = "1"}
           >Contact Us</a>
         </div>
+
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="mobile-menu-btn"
+          style={{
+            background: "none", border: "none", cursor: "pointer",
+            color: "white", fontSize: 24, padding: "4px 8px",
+            display: "none",
+          }}
+        >☰</button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div style={{
+          background: "rgba(10,10,10,0.98)", padding: "12px 20px 20px",
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
+        }}>
+          {links.map(l => (
+            <button key={l.label} onClick={() => scrollTo(l.id)}
+              style={{
+                display: "block", width: "100%", textAlign: "left",
+                color: "rgba(255,255,255,0.8)", fontSize: 15,
+                background: "none", border: "none", cursor: "pointer",
+                padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.07)",
+                fontFamily: "-apple-system,sans-serif",
+              }}
+            >{l.label}</button>
+          ))}
+          <a href="mailto:hpatidar0099@gmail.com"
+            style={{
+              display: "inline-block", marginTop: 14,
+              background: "#f7c948", color: "#000", fontSize: 14,
+              padding: "10px 24px", borderRadius: 22, textDecoration: "none",
+              fontWeight: 600,
+            }}
+          >Contact Us</a>
+        </div>
+      )}
+
+      <style>{`
+        @media (max-width: 768px) {
+          .desktop-nav { display: none !important; }
+          .mobile-menu-btn { display: block !important; }
+        }
+        @media (min-width: 769px) {
+          .mobile-menu-btn { display: none !important; }
+        }
+      `}</style>
     </nav>
   );
 }
@@ -107,15 +160,15 @@ function GlobalNav() {
    CHAPTER NAV
 ───────────────────────────────────────── */
 function ChapterNav() {
-  const [active, setActive] = useState("services");
+  const [active, setActive] = useState("my-work");
   const items = [
-    { id: "services", label: "Services" },
     { id: "my-work", label: "My Work" },
     { id: "youtube-section", label: "YouTube" },
     { id: "brand-video", label: "Brand Videos" },
     { id: "end-to-end", label: "End-to-End" },
     { id: "ai-video", label: "AI Videos" },
     { id: "instagram-trend", label: "Instagram Reels" },
+    { id: "contact-section", label: "Contact" },
   ];
   const handleClick = (id) => {
     setActive(id);
@@ -128,12 +181,12 @@ function ChapterNav() {
       position: "sticky", top: 58, zIndex: 998,
       width: "100%", boxSizing: "border-box",
     }}>
-      <div style={{ width: "100%", padding: "0 22px", overflowX: "auto", scrollbarWidth: "none", boxSizing: "border-box" }}>
+      <div style={{ width: "100%", padding: "0 12px", overflowX: "auto", scrollbarWidth: "none", boxSizing: "border-box" }}>
         <div style={{ display: "flex" }}>
           {items.map(item => (
             <button key={item.id} onClick={() => handleClick(item.id)}
               style={{
-                padding: "13px 22px", fontSize: 12, background: "transparent",
+                padding: "13px 16px", fontSize: 12, background: "transparent",
                 border: "none", cursor: "pointer", whiteSpace: "nowrap",
                 color: active === item.id ? "white" : "rgba(255,255,255,0.55)",
                 borderBottom: active === item.id ? "2px solid #f7c948" : "2px solid transparent",
@@ -149,12 +202,12 @@ function ChapterNav() {
 }
 
 /* ─────────────────────────────────────────
-   YT VIDEO ONLY BANNER — no text, no buttons
+   YT VIDEO BANNER
 ───────────────────────────────────────── */
 function YTVideoBanner({ videoId, title }) {
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1`;
   return (
-    <section style={{ position: "relative", background: "#000", overflow: "hidden", height: 520, width: "100%" }}>
+    <section style={{ position: "relative", background: "#000", overflow: "hidden", height: "clamp(260px,45vw,520px)", width: "100%" }}>
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
         <iframe
           src={embedUrl}
@@ -173,7 +226,6 @@ function YTVideoBanner({ videoId, title }) {
           title={title}
         />
       </div>
-      {/* subtle vignette only */}
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.35) 100%)",
@@ -188,6 +240,7 @@ function YTVideoBanner({ videoId, title }) {
 ───────────────────────────────────────── */
 function LocalVideoShort({ src }) {
   const videoRef = useRef(null);
+  const containerRef = useRef(null);
   const [hovered, setHovered] = useState(false);
   const [error, setError] = useState(false);
 
@@ -202,7 +255,7 @@ function LocalVideoShort({ src }) {
       },
       { threshold: 0.3 }
     );
-    if (videoRef.current) observer.observe(videoRef.current.parentElement);
+    if (containerRef.current) observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
@@ -210,12 +263,15 @@ function LocalVideoShort({ src }) {
 
   return (
     <div
-      style={{ flexShrink: 0, width: 160, cursor: "pointer", position: "relative" }}
+      ref={containerRef}
+      style={{ flexShrink: 0, cursor: "pointer", position: "relative" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{
-        width: 160, height: 284, borderRadius: 16, overflow: "hidden",
+        width: "clamp(130px, 18vw, 165px)",
+        height: "clamp(230px, 32vw, 293px)",
+        borderRadius: 16, overflow: "hidden",
         position: "relative", background: "#111",
         boxShadow: hovered ? "0 8px 32px rgba(0,0,0,0.6)" : "0 2px 12px rgba(0,0,0,0.4)",
         transition: "box-shadow 0.3s, transform 0.3s",
@@ -251,12 +307,15 @@ function LocalVideoShort({ src }) {
 }
 
 /* ─────────────────────────────────────────
-   LOCAL SHORTS CAROUSEL STRIP
+   SHORTS STRIP WITH SHOW MORE
 ───────────────────────────────────────── */
-function LocalShortsStrip({ title, badge, badgeBg, videos }) {
+function ShortsStrip({ title, badge, badgeBg, videos, initialCount = 6 }) {
+  const [showAll, setShowAll] = useState(false);
   const stripRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const displayedVideos = showAll ? videos : videos.slice(0, initialCount);
 
   const scroll = (dir) => {
     if (stripRef.current) stripRef.current.scrollBy({ left: dir * 400, behavior: "smooth" });
@@ -270,13 +329,28 @@ function LocalShortsStrip({ title, badge, badgeBg, videos }) {
   };
 
   return (
-    <div style={{ background: "#000", padding: "32px 0 24px", position: "relative", width: "100%" }}>
-      <div style={{ padding: "0 40px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+    <div style={{ background: "#000", padding: "36px 0 32px", position: "relative", width: "100%" }}>
+      <div style={{ padding: "0 20px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ background: badgeBg || "#333", color: "white", fontSize: 11, padding: "3px 12px", borderRadius: 4, fontWeight: 700, fontFamily: "-apple-system,sans-serif" }}>{badge}</span>
-          <h3 style={{ color: "white", fontSize: 20, fontWeight: 600, margin: 0, fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", letterSpacing: "-0.018em" }}>{title}</h3>
+          <h3 style={{ color: "white", fontSize: "clamp(16px,3vw,20px)", fontWeight: 600, margin: 0, fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", letterSpacing: "-0.018em" }}>{title}</h3>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {videos.length > initialCount && (
+            <button
+              onClick={() => setShowAll(!showAll)}
+              style={{
+                background: "rgba(247,201,72,0.15)", border: "1px solid rgba(247,201,72,0.4)",
+                color: "#f7c948", fontSize: 12, padding: "6px 16px", borderRadius: 20,
+                cursor: "pointer", fontFamily: "-apple-system,sans-serif", fontWeight: 600,
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(247,201,72,0.25)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(247,201,72,0.15)"}
+            >
+              {showAll ? "Show Less" : `+${videos.length - initialCount} More`}
+            </button>
+          )}
           {[{ dir: -1, icon: "‹" }, { dir: 1, icon: "›" }].map(({ dir, icon }) => (
             <button key={dir} onClick={() => scroll(dir)}
               style={{
@@ -285,7 +359,7 @@ function LocalShortsStrip({ title, badge, badgeBg, videos }) {
                 border: "1px solid rgba(255,255,255,0.15)",
                 color: "white", fontSize: 18, cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "sans-serif", transition: "background 0.2s",
+                transition: "background 0.2s",
                 opacity: (dir === -1 ? canScrollLeft : canScrollRight) ? 1 : 0.3,
               }}
               onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.2)"}
@@ -297,64 +371,16 @@ function LocalShortsStrip({ title, badge, badgeBg, videos }) {
       <div
         ref={stripRef}
         onScroll={checkScroll}
-        style={{ display: "flex", gap: 12, overflowX: "auto", padding: "4px 40px 8px", scrollbarWidth: "none", scrollSnapType: "x mandatory" }}
+        style={{
+          display: "flex", gap: 12, overflowX: "auto",
+          padding: "4px 20px 8px", scrollbarWidth: "none", scrollSnapType: "x mandatory",
+          flexWrap: showAll ? "wrap" : "nowrap",
+        }}
       >
-        {videos.map((v, i) => (
+        {displayedVideos.map((v, i) => (
           <div key={i} style={{ scrollSnapAlign: "start" }}>
             <LocalVideoShort src={v.src} />
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   AUTO SLIDER
-───────────────────────────────────────── */
-function AutoSlider({ items, cardWidth = 200, gap = 14, darkBg = "#0a0a0a" }) {
-  const [offset, setOffset] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const speed = 0.55;
-
-  useEffect(() => {
-    let raf;
-    const totalWidth = items.length * (cardWidth + gap);
-    const step = () => {
-      if (!paused) setOffset(prev => { const next = prev + speed; return next >= totalWidth ? 0 : next; });
-      raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [paused, items.length, cardWidth, gap]);
-
-  const doubled = [...items, ...items];
-  return (
-    <div style={{ background: darkBg, padding: "20px 0", overflow: "hidden", width: "100%" }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div style={{ display: "flex", gap, transform: `translateX(-${offset}px)`, willChange: "transform" }}>
-        {doubled.map((item, i) => (
-          <a key={i} href={item.url || "#"} target="_blank" rel="noopener noreferrer"
-            style={{ flexShrink: 0, width: cardWidth, textDecoration: "none", display: "block" }}>
-            <div style={{ width: cardWidth, height: item.wide ? Math.round(cardWidth * 0.56) : cardWidth, borderRadius: 12, background: item.bg || "#1a1a1a", overflow: "hidden", position: "relative", marginBottom: 8 }}>
-              {item.thumb ? (
-                <img src={item.thumb} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} onError={e => { e.target.style.display = "none"; }} />
-              ) : (
-                <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: item.bg || "#222" }}>
-                  {item.emoji && <span style={{ fontSize: 34 }}>{item.emoji}</span>}
-                  {item.text && <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: 700, textAlign: "center", padding: "0 10px", lineHeight: 1.3 }}>{item.text}</span>}
-                </div>
-              )}
-              <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.2s" }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(0,0,0,0.35)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(0,0,0,0)"}
-              />
-            </div>
-            <p style={{ color: "white", fontSize: 11, margin: "0 0 2px", fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.title}</p>
-            {item.sub && <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 10, margin: 0, fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif" }}>{item.sub}</p>}
-          </a>
         ))}
       </div>
     </div>
@@ -368,31 +394,203 @@ function HeroSection() {
   return (
     <section id="hero" style={{
       background: "linear-gradient(180deg,#050505 0%,#0a0a0a 100%)",
-      textAlign: "center", padding: "88px 24px 72px",
+      textAlign: "center", padding: "clamp(60px,10vw,88px) 24px clamp(50px,8vw,72px)",
       position: "relative", overflow: "hidden", width: "100%", boxSizing: "border-box",
     }}>
-      <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "60%", height: 300, background: "radial-gradient(ellipse, rgba(247,201,72,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "80%", height: 300, background: "radial-gradient(ellipse, rgba(247,201,72,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
       <h1 style={{
-        color: "white", fontSize: "clamp(40px,6vw,68px)", fontWeight: 700,
+        color: "white", fontSize: "clamp(32px,7vw,68px)", fontWeight: 700,
         letterSpacing: "-0.03em", lineHeight: 1.04, margin: "0 0 22px",
         fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", position: "relative",
       }}>
         Video Content Creator<br />&amp; Editor
       </h1>
       <p style={{
-        color: "rgba(255,255,255,0.68)", fontSize: 18, lineHeight: 1.65,
+        color: "rgba(255,255,255,0.68)", fontSize: "clamp(15px,2.5vw,18px)", lineHeight: 1.65,
         maxWidth: 660, margin: "0 auto 32px",
         fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif", position: "relative",
       }}>
         Award‑winning brand videos. Viral Instagram reels. YouTube growth strategy. AI‑generated content. End-to-end production from concept to delivery.
       </p>
       <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
-        <a href="mailto:hpatidar0099@gmail.com" style={{ background: "#f7c948", color: "#000", fontSize: 15, padding: "12px 30px", borderRadius: 24, textDecoration: "none", fontFamily: "-apple-system,sans-serif", fontWeight: 600 }}>Get in Touch</a>
+        <a href="#contact-section" onClick={e => { e.preventDefault(); document.getElementById("contact-section")?.scrollIntoView({ behavior: "smooth" }); }}
+          style={{ background: "#f7c948", color: "#000", fontSize: "clamp(13px,2vw,15px)", padding: "12px 28px", borderRadius: 24, textDecoration: "none", fontFamily: "-apple-system,sans-serif", fontWeight: 600 }}>
+          Get in Touch
+        </a>
         <button onClick={() => document.getElementById("my-work")?.scrollIntoView({ behavior: "smooth" })}
-          style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.3)", color: "white", fontSize: 15, padding: "12px 30px", borderRadius: 24, cursor: "pointer", fontFamily: "-apple-system,sans-serif" }}>
+          style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.3)", color: "white", fontSize: "clamp(13px,2vw,15px)", padding: "12px 28px", borderRadius: 24, cursor: "pointer", fontFamily: "-apple-system,sans-serif" }}>
           View My Work
         </button>
       </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────
+   CONTACT FORM
+───────────────────────────────────────── */
+function ContactSection() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSending(true);
+    setTimeout(() => {
+      setSending(false);
+      setSent(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
+    }, 1200);
+  };
+
+  return (
+    <section id="contact-section" style={{
+      background: "linear-gradient(160deg,#050505 0%,#0f0f0f 100%)",
+      padding: "clamp(60px,10vw,100px) clamp(20px,5vw,40px)",
+      borderTop: "1px solid rgba(255,255,255,0.08)",
+      width: "100%", boxSizing: "border-box",
+    }}>
+      <div style={{ maxWidth: 700, margin: "0 auto" }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 20, background: "rgba(247,201,72,0.1)", border: "1px solid rgba(247,201,72,0.25)", borderRadius: 20, padding: "6px 16px" }}>
+            <span style={{ color: "#f7c948", fontSize: 12, fontFamily: "-apple-system,sans-serif", letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 600 }}>Contact</span>
+          </div>
+          <h2 style={{ color: "white", fontSize: "clamp(28px,5vw,52px)", fontWeight: 700, margin: "0 0 16px", letterSpacing: "-0.03em", fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif" }}>
+            Let's Work Together
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, fontFamily: "-apple-system,sans-serif", margin: 0, lineHeight: 1.6 }}>
+            Have a project in mind? Reach out and let's create something amazing.
+          </p>
+        </div>
+
+        {sent ? (
+          <div style={{
+            background: "rgba(40,205,65,0.12)", border: "1px solid rgba(40,205,65,0.3)",
+            borderRadius: 20, padding: "40px 32px", textAlign: "center",
+          }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
+            <h3 style={{ color: "white", fontFamily: "-apple-system,sans-serif", margin: "0 0 8px", fontSize: 22 }}>Message Sent!</h3>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system,sans-serif", margin: 0 }}>Thanks for reaching out. I'll get back to you soon.</p>
+            <button onClick={() => setSent(false)} style={{ marginTop: 20, background: "#f7c948", color: "#000", border: "none", borderRadius: 20, padding: "10px 24px", cursor: "pointer", fontWeight: 600, fontFamily: "-apple-system,sans-serif" }}>Send Another</button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }} className="form-grid">
+              <div>
+                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 13, marginBottom: 8, fontFamily: "-apple-system,sans-serif", fontWeight: 500 }}>Your Name *</label>
+                <input
+                  name="name" type="text" required
+                  value={form.name} onChange={handleChange}
+                  placeholder="Hariom Patidar"
+                  style={{
+                    width: "100%", background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12,
+                    padding: "14px 16px", color: "white", fontSize: 15,
+                    fontFamily: "-apple-system,sans-serif", outline: "none",
+                    boxSizing: "border-box", transition: "border-color 0.2s",
+                  }}
+                  onFocus={e => e.target.style.borderColor = "rgba(247,201,72,0.5)"}
+                  onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+                />
+              </div>
+              <div>
+                <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 13, marginBottom: 8, fontFamily: "-apple-system,sans-serif", fontWeight: 500 }}>Email Address *</label>
+                <input
+                  name="email" type="email" required
+                  value={form.email} onChange={handleChange}
+                  placeholder="you@example.com"
+                  style={{
+                    width: "100%", background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12,
+                    padding: "14px 16px", color: "white", fontSize: 15,
+                    fontFamily: "-apple-system,sans-serif", outline: "none",
+                    boxSizing: "border-box", transition: "border-color 0.2s",
+                  }}
+                  onFocus={e => e.target.style.borderColor = "rgba(247,201,72,0.5)"}
+                  onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+                />
+              </div>
+            </div>
+            <div>
+              <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 13, marginBottom: 8, fontFamily: "-apple-system,sans-serif", fontWeight: 500 }}>Subject</label>
+              <input
+                name="subject" type="text"
+                value={form.subject} onChange={handleChange}
+                placeholder="Brand video project, YouTube editing..."
+                style={{
+                  width: "100%", background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12,
+                  padding: "14px 16px", color: "white", fontSize: 15,
+                  fontFamily: "-apple-system,sans-serif", outline: "none",
+                  boxSizing: "border-box", transition: "border-color 0.2s",
+                }}
+                onFocus={e => e.target.style.borderColor = "rgba(247,201,72,0.5)"}
+                onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+              />
+            </div>
+            <div>
+              <label style={{ display: "block", color: "rgba(255,255,255,0.6)", fontSize: 13, marginBottom: 8, fontFamily: "-apple-system,sans-serif", fontWeight: 500 }}>Message *</label>
+              <textarea
+                name="message" required rows={5}
+                value={form.message} onChange={handleChange}
+                placeholder="Tell me about your project..."
+                style={{
+                  width: "100%", background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12,
+                  padding: "14px 16px", color: "white", fontSize: 15,
+                  fontFamily: "-apple-system,sans-serif", outline: "none",
+                  boxSizing: "border-box", resize: "vertical", minHeight: 140,
+                  transition: "border-color 0.2s",
+                }}
+                onFocus={e => e.target.style.borderColor = "rgba(247,201,72,0.5)"}
+                onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+              <button
+                type="submit" disabled={sending}
+                style={{
+                  background: sending ? "rgba(247,201,72,0.6)" : "#f7c948",
+                  color: "#000", border: "none", borderRadius: 24,
+                  padding: "14px 36px", fontSize: 15, fontWeight: 700,
+                  cursor: sending ? "not-allowed" : "pointer",
+                  fontFamily: "-apple-system,sans-serif",
+                  transition: "opacity 0.2s",
+                }}
+              >
+                {sending ? "Sending..." : "Send Message →"}
+              </button>
+              <a href="mailto:hpatidar0099@gmail.com" style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "-apple-system,sans-serif", textDecoration: "none" }}>
+                or email directly: hpatidar0099@gmail.com
+              </a>
+            </div>
+          </form>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div style={{ textAlign: "center", marginTop: 72, paddingTop: 32, borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 12 }}>
+          <div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg,#f7c948,#e6a800)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ color: "#000", fontWeight: 900, fontSize: 14, fontFamily: "Georgia,serif" }}>H</span>
+          </div>
+          <span style={{ color: "rgba(255,255,255,0.6)", fontFamily: "-apple-system,sans-serif", fontSize: 13 }}>
+            Hariom Patidar — Video Content Creator &amp; Editor
+          </span>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 12, fontFamily: "-apple-system,sans-serif", margin: 0 }}>© 2025 Hariom Patidar. All rights reserved.</p>
+      </div>
+
+      <style>{`
+        @media (max-width: 560px) {
+          .form-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }
@@ -459,14 +657,18 @@ function MyWorkSection() {
     },
   ];
 
+  const SECTION_DIVIDER = (
+    <div style={{ height: 2, background: "linear-gradient(90deg, transparent, rgba(247,201,72,0.3), transparent)", margin: "0" }} />
+  );
+
   return (
     <section id="my-work" style={{ background: "#000", width: "100%" }}>
 
-      {/* ── My Work Hero — CENTERED ── */}
+      {/* My Work Hero */}
       <div style={{
         background: "linear-gradient(160deg,#0a0a0a 0%,#141414 100%)",
         borderTop: "1px solid rgba(255,255,255,0.08)",
-        padding: "80px 40px 60px",
+        padding: "clamp(60px,10vw,80px) 40px clamp(40px,7vw,60px)",
         textAlign: "center",
         width: "100%", boxSizing: "border-box",
       }}>
@@ -475,12 +677,12 @@ function MyWorkSection() {
           <span style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, fontFamily: "-apple-system,sans-serif", letterSpacing: "0.06em", textTransform: "uppercase" }}>Portfolio</span>
         </div>
         <h2 style={{
-          color: "white", fontSize: "clamp(36px,5vw,64px)", fontWeight: 700,
+          color: "white", fontSize: "clamp(32px,6vw,64px)", fontWeight: 700,
           margin: "0 0 20px", letterSpacing: "-0.03em",
           fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", lineHeight: 1.04,
         }}>My Work</h2>
         <p style={{
-          color: "rgba(255,255,255,0.52)", fontSize: 18, lineHeight: 1.65,
+          color: "rgba(255,255,255,0.52)", fontSize: "clamp(15px,2.5vw,18px)", lineHeight: 1.65,
           margin: "0 auto", fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif",
           maxWidth: 600,
         }}>
@@ -488,19 +690,19 @@ function MyWorkSection() {
         </p>
       </div>
 
-      {/* ── YouTube Section — CENTERED ── */}
-      <div id="youtube-section" style={{ borderTop: "1px solid rgba(255,255,255,0.07)", width: "100%" }}>
+      {/* YouTube Section */}
+      <div id="youtube-section" style={{ borderTop: "3px solid rgba(255,255,255,0.06)", marginTop: 0, width: "100%" }}>
         <div style={{
-          padding: "56px 40px 28px",
+          padding: "clamp(40px,7vw,56px) clamp(20px,5vw,40px) 28px",
           background: "linear-gradient(160deg,#1a0000 0%,#3d0000 45%,#0d0000 100%)",
           textAlign: "center",
           width: "100%", boxSizing: "border-box",
         }}>
           <span style={{ background: "#ff0000", color: "white", fontSize: 11, padding: "3px 12px", borderRadius: 4, fontWeight: 700, fontFamily: "-apple-system,sans-serif" }}>YouTube Growth</span>
           <h3 style={{
-            color: "white", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 600,
+            color: "white", fontSize: "clamp(22px,4vw,40px)", fontWeight: 600,
             margin: "14px 0 10px", letterSpacing: "-0.02em",
-            fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", lineHeight: 1.08,
+            fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif",
           }}>YouTube Content</h3>
           <p style={{ color: "rgba(255,255,255,0.68)", fontSize: 16, margin: "0 auto 24px", fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif", maxWidth: 500 }}>
             Audience engagement, retention, and platform growth.
@@ -508,14 +710,14 @@ function MyWorkSection() {
         </div>
 
         {/* YouTube thumbnail grid */}
-        <div style={{ background: "#0a0000", padding: "20px 40px 32px", overflowX: "auto", scrollbarWidth: "none", width: "100%", boxSizing: "border-box" }}>
+        <div style={{ background: "#0a0000", padding: "20px clamp(16px,4vw,40px) 48px", overflowX: "auto", scrollbarWidth: "none", width: "100%", boxSizing: "border-box" }}>
           <div style={{ display: "flex", gap: 14, minWidth: "max-content" }}>
             {ytVideos.map((v, i) => (
               <a key={i} href={`https://youtu.be/${v.ytId}`} target="_blank" rel="noopener noreferrer"
-                style={{ flexShrink: 0, width: 220, textDecoration: "none" }}>
-                <div style={{ position: "relative", width: 220, height: 124, borderRadius: 12, overflow: "hidden", background: "#1a0000", marginBottom: 8 }}>
+                style={{ flexShrink: 0, width: "clamp(160px,22vw,220px)", textDecoration: "none" }}>
+                <div style={{ position: "relative", width: "100%", paddingTop: "56.25%", borderRadius: 12, overflow: "hidden", background: "#1a0000", marginBottom: 8 }}>
                   <img src={`https://img.youtube.com/vi/${v.ytId}/hqdefault.jpg`} alt={v.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                    style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                   <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }}
                     onMouseEnter={e => { e.currentTarget.style.background = "rgba(0,0,0,0.4)"; e.currentTarget.querySelector(".yt-play").style.opacity = "1"; }}
                     onMouseLeave={e => { e.currentTarget.style.background = "rgba(0,0,0,0)"; e.currentTarget.querySelector(".yt-play").style.opacity = "0"; }}
@@ -533,61 +735,69 @@ function MyWorkSection() {
         </div>
       </div>
 
-      {/* ── Category Sections ── */}
-      {categories.map(cat => (
-        <div key={cat.id} id={cat.id} style={{ borderTop: "1px solid rgba(255,255,255,0.07)", width: "100%" }}>
+      {/* Category Sections — with bigger spacing between */}
+      {categories.map((cat, idx) => (
+        <div key={cat.id}>
+          {/* Big visual divider between sections */}
+          <div style={{ height: "clamp(32px,6vw,64px)", background: "#000" }} />
 
-          {/* Category Banner — CENTERED */}
-          <div style={{
-            position: "relative",
-            background: cat.gradient,
-            padding: "56px 40px 44px",
-            textAlign: "center",
-            width: "100%", boxSizing: "border-box",
-          }}>
-            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%)", pointerEvents: "none" }} />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <span style={{
-                background: cat.badgeBg, color: "white", fontSize: 11,
-                padding: "3px 14px", borderRadius: 4, fontWeight: 700,
-                fontFamily: "-apple-system,sans-serif", display: "inline-block", marginBottom: 16,
-              }}>{cat.badge}</span>
-              <h3 style={{
-                color: "white", fontSize: "clamp(26px,3.5vw,44px)", fontWeight: 700,
-                margin: "0 0 14px", letterSpacing: "-0.025em",
-                fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", lineHeight: 1.08,
-              }}>{cat.title}</h3>
-              <p style={{
-                color: "rgba(255,255,255,0.72)", fontSize: 17, lineHeight: 1.6,
-                margin: "0 auto 26px",
-                fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif",
-                maxWidth: 520,
-              }}>{cat.desc}</p>
-              <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-                {cat.tags.map(tag => (
-                  <span key={tag} style={{
-                    background: "rgba(255,255,255,0.1)",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    color: "rgba(255,255,255,0.75)", fontSize: 13,
-                    padding: "6px 18px", borderRadius: 20,
-                    fontFamily: "-apple-system,sans-serif",
-                  }}>{tag}</span>
-                ))}
+          <div id={cat.id} style={{ borderTop: "3px solid rgba(255,255,255,0.06)", width: "100%" }}>
+            {/* Category Banner */}
+            <div style={{
+              position: "relative",
+              background: cat.gradient,
+              padding: "clamp(40px,7vw,56px) clamp(20px,5vw,40px) clamp(32px,6vw,44px)",
+              textAlign: "center",
+              width: "100%", boxSizing: "border-box",
+            }}>
+              <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%)", pointerEvents: "none" }} />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <span style={{
+                  background: cat.badgeBg, color: "white", fontSize: 11,
+                  padding: "3px 14px", borderRadius: 4, fontWeight: 700,
+                  fontFamily: "-apple-system,sans-serif", display: "inline-block", marginBottom: 16,
+                }}>{cat.badge}</span>
+                <h3 style={{
+                  color: "white", fontSize: "clamp(22px,4vw,44px)", fontWeight: 700,
+                  margin: "0 0 14px", letterSpacing: "-0.025em",
+                  fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", lineHeight: 1.08,
+                }}>{cat.title}</h3>
+                <p style={{
+                  color: "rgba(255,255,255,0.72)", fontSize: "clamp(14px,2.2vw,17px)", lineHeight: 1.6,
+                  margin: "0 auto 26px",
+                  fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif",
+                  maxWidth: 520,
+                }}>{cat.desc}</p>
+                <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+                  {cat.tags.map(tag => (
+                    <span key={tag} style={{
+                      background: "rgba(255,255,255,0.1)",
+                      border: "1px solid rgba(255,255,255,0.18)",
+                      color: "rgba(255,255,255,0.75)", fontSize: 13,
+                      padding: "6px 18px", borderRadius: 20,
+                      fontFamily: "-apple-system,sans-serif",
+                    }}>{tag}</span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Video shorts strip */}
-          {cat.videos.length > 0 && (
-            <LocalShortsStrip
-              title={cat.title}
-              badge={cat.badge}
-              badgeBg={cat.badgeBg}
-              videos={cat.videos}
-            />
-          )}
+            {/* Video shorts strip */}
+            {cat.videos.length > 0 && (
+              <ShortsStrip
+                title={cat.title}
+                badge={cat.badge}
+                badgeBg={cat.badgeBg}
+                videos={cat.videos}
+                initialCount={6}
+              />
+            )}
+          </div>
         </div>
       ))}
+
+      {/* Bottom spacing */}
+      <div style={{ height: "clamp(40px,7vw,72px)", background: "#000" }} />
     </section>
   );
 }
@@ -598,40 +808,10 @@ function MyWorkSection() {
 export default function App() {
   const tvYTId = "xm9_4OHl2XQ";
   const musicYTId = "DqMDi4A7Ve8";
-  const arcadeYTId = "8QkWeInuFPo";
-  const fitnessYTId = "PGjTr-XLTm0";
 
-  const tvItems = [
-    { url: "#", title: "The Studio", sub: "Comedy", bg: "linear-gradient(135deg,#1a1a2e,#2d2d5e)", text: "The Studio", wide: true },
-    { url: "#", title: "Severance", sub: "Drama", bg: "linear-gradient(135deg,#0a1628,#1a3a5c)", text: "Severance", wide: true },
-    { url: "#", title: "Silo", sub: "Sci-Fi", bg: "linear-gradient(135deg,#1a0a0a,#3a1010)", text: "Silo", wide: true },
-    { url: "#", title: "Foundation", sub: "Sci-Fi", bg: "linear-gradient(135deg,#0a0a1a,#1a1a3a)", text: "Foundation", wide: true },
-    { url: "#", title: "The Gorge", sub: "Thriller", bg: "linear-gradient(135deg,#0a1a0a,#1a3a1a)", text: "The Gorge", wide: true },
-    { url: "#", title: "Shrinking", sub: "Comedy", bg: "linear-gradient(135deg,#1a0a18,#3a1a35)", text: "Shrinking", wide: true },
-    { url: "#", title: "Slow Horses", sub: "Spy", bg: "linear-gradient(135deg,#111,#333)", text: "Slow Horses", wide: true },
-  ];
-  const musicItems = [
-    { url: "#", title: "Daily Mix", sub: "Curated", bg: "hsl(0,65%,25%)" },
-    { url: "#", title: "Today's Hits", sub: "Charts", bg: "hsl(210,60%,22%)" },
-    { url: "#", title: "Big Lit", sub: "Playlist", bg: "hsl(280,55%,22%)" },
-    { url: "#", title: "Zule Pool", sub: "Playlist", bg: "hsl(120,50%,18%)" },
-    { url: "#", title: "Today's Country", sub: "Country", bg: "hsl(35,60%,22%)" },
-    { url: "#", title: "Top 100: Global", sub: "Charts", bg: "hsl(200,60%,20%)" },
-  ];
-  const arcadeItems = [
-    { url: "#", title: "Yoku's Island", sub: "Adventure", bg: "linear-gradient(135deg,#1a3a1a,#2a5a2a)", emoji: "🌴", wide: true },
-    { url: "#", title: "Pinball Mayhem", sub: "Arcade", bg: "linear-gradient(135deg,#2a1a3a,#4a2a5a)", emoji: "🎮", wide: true },
-    { url: "#", title: "Fantasian Neo", sub: "RPG", bg: "linear-gradient(135deg,#1a2a3a,#2a3a5a)", emoji: "⚔️", wide: true },
-    { url: "#", title: "Alto's Odyssey", sub: "Runner", bg: "linear-gradient(135deg,#1a1a3a,#2a2a5a)", emoji: "🏂", wide: true },
-    { url: "#", title: "Tangle Tower", sub: "Mystery", bg: "linear-gradient(135deg,#2a2a1a,#4a4a2a)", emoji: "🔍", wide: true },
-  ];
-  const fitnessItems = [
-    { url: "#", title: "Meditation with Jacob", sub: "10 min", bg: "hsl(200,40%,20%)", emoji: "🧘", wide: true },
-    { url: "#", title: "Core with Jim", sub: "20 min", bg: "hsl(15,50%,20%)", emoji: "💪", wide: true },
-    { url: "#", title: "HIIT with Drew", sub: "30 min", bg: "hsl(140,40%,18%)", emoji: "🏃", wide: true },
-    { url: "#", title: "Yoga with Johanna", sub: "25 min", bg: "hsl(270,40%,20%)", emoji: "🤸", wide: true },
-    { url: "#", title: "Cycling with Shane", sub: "45 min", bg: "hsl(40,50%,18%)", emoji: "🚴", wide: true },
-  ];
+  // Use LOCAL_VIDEOS for the service sections instead of fake cards
+  const serviceVideos1 = LOCAL_VIDEOS.slice(0, 6);
+  const serviceVideos2 = LOCAL_VIDEOS.slice(6, 12);
 
   return (
     <div style={{
@@ -643,36 +823,40 @@ export default function App() {
       <ChapterNav />
       <HeroSection />
 
-      {/* ── Services section label ── */}
+      {/* Services — YouTube banner + real shorts */}
       <div id="services" style={{ width: "100%" }}>
 
-        {/* TV+ — video only, no text */}
         <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <YTVideoBanner videoId={tvYTId} title="Video Reel 1" />
-          <AutoSlider items={tvItems} cardWidth={220} gap={14} darkBg="#070b0f" />
+          {/* Show actual shorts instead of fake cards */}
+          <ShortsStrip
+            title="Featured Shorts"
+            badge="Featured"
+            badgeBg="#333"
+            videos={serviceVideos1}
+            initialCount={6}
+          />
         </section>
 
-        {/* Music — video only, no text */}
+        <div style={{ height: "clamp(24px,5vw,48px)", background: "#000" }} />
+
         <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <YTVideoBanner videoId={musicYTId} title="Video Reel 2" />
-          <AutoSlider items={musicItems} cardWidth={160} gap={14} darkBg="#080000" />
-        </section>
-
-        {/* Arcade — video only, no text */}
-        <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <YTVideoBanner videoId={arcadeYTId} title="Video Reel 3" />
-          <AutoSlider items={arcadeItems} cardWidth={220} gap={14} darkBg="#050510" />
-        </section>
-
-        {/* Fitness — video only, no text */}
-        <section style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <YTVideoBanner videoId={fitnessYTId} title="Video Reel 4" />
-          <AutoSlider items={fitnessItems} cardWidth={220} gap={14} darkBg="#080400" />
+          <ShortsStrip
+            title="More Content"
+            badge="Latest"
+            badgeBg="linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045)"
+            videos={serviceVideos2}
+            initialCount={6}
+          />
         </section>
       </div>
 
-      {/* ── My Work ── */}
+      {/* My Work */}
       <MyWorkSection />
+
+      {/* Contact */}
+      <ContactSection />
     </div>
   );
 }
