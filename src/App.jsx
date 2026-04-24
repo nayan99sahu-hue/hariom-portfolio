@@ -403,7 +403,7 @@ function HeroSection() {
         letterSpacing: "-0.03em", lineHeight: 1.04, margin: "0 0 22px",
         fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif", position: "relative",
       }}>
-        Video Content Creator<br />&amp; Editor
+        Content Creator<br />&amp; Editor
       </h1>
       <p style={{
         color: "rgba(255,255,255,0.68)", fontSize: "clamp(15px,2.5vw,18px)", lineHeight: 1.65,
@@ -462,9 +462,6 @@ function ContactSection() {
           <h2 style={{ color: "white", fontSize: "clamp(28px,5vw,52px)", fontWeight: 700, margin: "0 0 16px", letterSpacing: "-0.03em", fontFamily: "-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif" }}>
             Let's Work Together
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 17, fontFamily: "-apple-system,sans-serif", margin: 0, lineHeight: 1.6 }}>
-            Have a project in mind? Reach out and let's create something amazing.
-          </p>
         </div>
 
         {sent ? (
@@ -665,7 +662,7 @@ function MyWorkSection() {
     <section id="my-work" style={{ background: "#000", width: "100%" }}>
 
       {/* My Work Hero */}
-      <div style={{
+      {/* <div style={{
         background: "linear-gradient(160deg,#0a0a0a 0%,#141414 100%)",
         borderTop: "1px solid rgba(255,255,255,0.08)",
         padding: "clamp(60px,10vw,80px) 40px clamp(40px,7vw,60px)",
@@ -688,7 +685,7 @@ function MyWorkSection() {
         }}>
           A curated collection of video production spanning brand storytelling, YouTube content strategy, AI-generated video, and viral Instagram reels.
         </p>
-      </div>
+      </div> */}
 
       {/* YouTube Section */}
       <div id="youtube-section" style={{ borderTop: "3px solid rgba(255,255,255,0.06)", marginTop: 0, width: "100%" }}>
@@ -801,6 +798,52 @@ function MyWorkSection() {
     </section>
   );
 }
+function BackgroundMusic() {
+  const playerRef = useRef(null);
+  const initializedRef = useRef(false);
+
+  const initPlayer = () => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    playerRef.current = new window.YT.Player("yt-bg-player", {
+      videoId: "mBXgbfmuY30",
+      playerVars: { autoplay: 1, loop: 1, playlist: "mBXgbfmuY30", controls: 0, rel: 0 },
+      events: {
+        onReady: (e) => { e.target.setVolume(30); e.target.playVideo(); },
+      },
+    });
+  };
+
+  useEffect(() => {
+    const startOnInteraction = () => {
+      if (window.YT && window.YT.Player) {
+        initPlayer();
+      } else {
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+        window.onYouTubeIframeAPIReady = initPlayer;
+      }
+      window.removeEventListener("scroll", startOnInteraction);
+      window.removeEventListener("click", startOnInteraction);
+    };
+
+    window.addEventListener("scroll", startOnInteraction, { once: true });
+    window.addEventListener("click", startOnInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("scroll", startOnInteraction);
+      window.removeEventListener("click", startOnInteraction);
+    };
+  }, []);
+
+  return (
+    <div style={{ position: "fixed", left: -9999, top: -9999, width: 1, height: 1, overflow: "hidden" }}>
+      <div id="yt-bg-player" />
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────
    ROOT
@@ -819,6 +862,7 @@ export default function App() {
       minHeight: "100vh", background: "#000",
       width: "100%", overflowX: "hidden",
     }}>
+      <BackgroundMusic /> 
       <GlobalNav />
       <ChapterNav />
       <HeroSection />
